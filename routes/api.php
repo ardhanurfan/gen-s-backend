@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\HistoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\UserController;
@@ -25,4 +26,6 @@ Route::post('reset-password', [UserController::class, 'resetPassword']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('user', [UserController::class, 'fetch']);
     Route::post('logout', [UserController::class, 'logout']);
+
+    Route::get('history', [HistoryController::class, 'all']);
 });

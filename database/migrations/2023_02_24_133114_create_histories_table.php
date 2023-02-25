@@ -15,7 +15,6 @@ return new class extends Migration
             $table->foreignId('userId')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('audioId')->constrained('audios')->onDelete('cascade')->onUpdate('cascade');
             $table->primary(['userId', 'audioId']);
-            $table->integer('sequence');
             $table->integer('count');
             $table->softDeletes();
             $table->timestamps();

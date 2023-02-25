@@ -18,7 +18,6 @@ class History extends Model
     protected $fillable = [
         'userId',
         'audioId',
-        'sequence',
         'count',
     ];
 
