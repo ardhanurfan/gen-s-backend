@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\AudioController;
 use App\Http\Controllers\API\HistoryController;
+use App\Http\Controllers\API\GalleryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\UserController;
@@ -24,13 +25,19 @@ Route::get('email/verify/{id}', [UserController::class, 'verify'])->name('verifi
 Route::post('forgot-password', [UserController::class, 'forgotPassword']);
 Route::post('reset-password', [UserController::class, 'resetPassword']);
 
+Route::get('gallery', [GalleryController::class, 'all']);
+Route::post('create-gallery', [GalleryController::class, 'create']);
+Route::post('delete-gallery', [GalleryController::class, 'delete']);
+
+Route::post('delete-audio', [AudioController::class, 'delete']);
+
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('user', [UserController::class, 'fetch']);
     Route::post('logout', [UserController::class, 'logout']);
-
+    
     Route::get('history', [HistoryController::class, 'all']);
     Route::post('history', [HistoryController::class, 'add']);
-
+    
     Route::get('audio', [AudioController::class, 'all']);
-    Route::post('audio', [AudioController::class, 'add']);
+    Route::post('add-audio', [AudioController::class, 'add']);
 });

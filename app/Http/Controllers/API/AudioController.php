@@ -35,7 +35,7 @@ class AudioController extends Controller
             }
         }
 
-        $audio = Audio::with(['images'])->where('uploaderId', Auth::user()->id)->orWhere('uploaderRole', $request->audioId);
+        $audio = Audio::with(['images'])->where(function($q) {$q->where('uploaderId', Auth::user()->id)->orWhere('uploaderRole', 'ADMIN');});
 
         if($title) {
             $audio->where('title', 'like', '%' . $title . '%');
@@ -43,7 +43,7 @@ class AudioController extends Controller
 
         return ResponseFormatter::success(
             $audio->orderBy('created_at', 'DESC')->paginate($limit),
-            'Get audio data successfully'
+            'Get audios data successfully'
         );
     }
 
@@ -65,9 +65,9 @@ class AudioController extends Controller
         ]);
 
         // cek galleries ada root belum
-        $gallery = Gallery::find(1);
+        $gallery = Gallery::where('name', 'root')->first();
         if (!$gallery) {
-            Gallery::create([
+            $root = Gallery::create([
                 'name' => 'root',
             ]);
         }
@@ -79,13 +79,44 @@ class AudioController extends Controller
             Image::create([
                 'url' => $imagePath,
                 'audioId' => $audio->id,
-                'galleryId' => 1,
+                'galleryId' => $root->id,
             ]);
         }
 
         return ResponseFormatter::success(
             $audio->load('images'),
             'Add audio successfully'
+        );
+    }
+
+    public function delete(Request $request) {
+        $request->validate([
+            'id' => 'required|integer',
+        ]);
+
+        $audio = Audio::with(['images'])->find($request->id);
+
+        if (!$audio) {
+            return ResponseFormatter::error(
+                null,
+                'Data not found',
+                404
+            );
+        }
+
+        // delete images from storage
+        foreach($audio->images as $image) {
+            unlink(public_path(str_replace(config('app.url'),'',$image['url'])));
+        }
+        
+        // delete audio from storage
+        unlink(public_path(str_replace(config('app.url'),'',$audio->url)));
+
+        $audio->forceDelete();
+
+        return ResponseFormatter::success(
+            null,
+            'Delete audio successfully'
         );
     }
 }
