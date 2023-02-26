@@ -11,6 +11,8 @@ class Audio extends Model
 {
     use HasFactory, SoftDeletes;
 
+    public $table = "audios";
+
     /**
      * The attributes that are mass assignable.
      *

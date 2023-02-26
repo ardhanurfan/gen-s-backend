@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\AudioController;
 use App\Http\Controllers\API\HistoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -28,4 +29,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('logout', [UserController::class, 'logout']);
 
     Route::get('history', [HistoryController::class, 'all']);
+    Route::post('history', [HistoryController::class, 'add']);
+
+    Route::get('audio', [AudioController::class, 'all']);
+    Route::post('audio', [AudioController::class, 'add']);
 });

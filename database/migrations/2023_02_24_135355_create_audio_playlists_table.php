@@ -12,9 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('audio_playlists', function (Blueprint $table) {
+            $table->id();
             $table->foreignId('audioId')->constrained('audios')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('playlistId')->constrained('playlists')->onDelete('cascade')->onUpdate('cascade');
-            $table->primary(['audioId', 'playlistId']);
+            $table->integer('sequence');
             $table->softDeletes();
             $table->timestamps();
         });

@@ -18,14 +18,39 @@ class HistoryController extends Controller
 
         if ($menu == 'MOST') {
             return ResponseFormatter::success(
-                $history->sortBy('count')->paginate($limit),
+                $history->orderBy('count', 'DESC')->paginate($limit),
                 'Get history data successfully'
             );
         }
 
         return ResponseFormatter::success(
-            $history->sortBy('updated_at')->paginate($limit),
+            $history->orderBy('updated_at', 'DESC')->paginate($limit),
             'Get history data successfully'
+        );
+    }
+
+    public function add(Request $request) {
+        $request->validate([
+            'audioId' => 'required|integer|exists:audios,id',
+        ]);
+
+        $history = History::where([['userId', Auth::user()->id], ['audioId', $request->audioId]])->first();
+
+        if ($history) {
+            $history->update([
+                'count' => $history->count+1,
+            ]);
+        } else {
+            $history = History::create([
+                'userId' => Auth::user()->id,
+                'audioId' => $request->audioId,
+                'count' => 1,
+            ]);
+        }
+       
+        return ResponseFormatter::success(
+            $history->load('audio.images'),
+            'History updated'
         );
     }
 }

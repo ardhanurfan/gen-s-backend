@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('histories', function (Blueprint $table) {
+            $table->id();
             $table->foreignId('userId')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('audioId')->constrained('audios')->onDelete('cascade')->onUpdate('cascade');
-            $table->primary(['userId', 'audioId']);
             $table->integer('count');
             $table->softDeletes();
             $table->timestamps();
