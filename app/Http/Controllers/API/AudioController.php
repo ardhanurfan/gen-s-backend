@@ -72,9 +72,9 @@ class AudioController extends Controller
             ]);
         }
 
-        // masukan foto ke tabel galleries
-        foreach($request->images as $images) {
-            $imagePath = $images->storeAs('public/images', 'image_'.uniqid().'.'.$images->extension());
+        // masukkan foto ke tabel galleries
+        foreach($request->images as $image) {
+            $imagePath = $image->storeAs('public/images', 'image_'.uniqid().'.'.$image->extension());
 
             Image::create([
                 'url' => $imagePath,
