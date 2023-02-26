@@ -39,7 +39,7 @@ class AudioController extends Controller
         $audio = Audio::with(['images'])->where('uploaderId', Auth::user()->id)->orWhere('uploaderRole', $request->audioId);
 
         if($title) {
-            $audio->where('name', 'like', '%' . $title . '%');
+            $audio->where('title', 'like', '%' . $title . '%');
         }
 
         return ResponseFormatter::success(
