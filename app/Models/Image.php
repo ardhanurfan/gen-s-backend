@@ -17,13 +17,14 @@ class Image extends Model
      * @var string[]
      */
     protected $fillable = [
-        'imageUrl',
+        'url',
         'audioId',
         'galleryId',
     ];
-    
-    public function getUrlAttribute($imageUrl)
+
+    public function getUrlAttribute($url)
     {
-        return config('app.url').Storage::url($imageUrl);
+        return config('app.url').Storage::url($url);
     }
+
 }

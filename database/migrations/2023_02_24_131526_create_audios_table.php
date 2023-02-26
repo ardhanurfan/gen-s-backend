@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('audios', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('audioUrl');
+            $table->string('url');
             $table->foreignId('uploaderId')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
             $table->string('uploaderRole')->default('ADMIN');
             $table->softDeletes();

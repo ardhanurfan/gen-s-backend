@@ -9,7 +9,6 @@ use App\Models\Gallery;
 use App\Models\Image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 
 class AudioController extends Controller
 {
@@ -55,12 +54,12 @@ class AudioController extends Controller
         ]);
 
         $audioFile = $request->file('audioFile');
-        $audioPath = $audioFile->storeAs('audios', 'audio_'.uniqid().'.'.$audioFile->extension(), ['disk' => 'public']);
+        $audioPath = $audioFile->storeAs('public/audios', 'audio_'.uniqid().'.'.$audioFile->extension());
 
         // masukkan ke tabel audios
         $audio = Audio::create([
             'title' => $request->title,
-            'audioUrl' => $audioPath,
+            'url' => $audioPath,
             'uploaderId' => Auth::user()->id,
             'uploaderRole' => Auth::user()->role,
         ]);
@@ -75,10 +74,10 @@ class AudioController extends Controller
 
         // masukan foto ke tabel galleries
         foreach($request->images as $images) {
-            $imagePath = $images->storeAs('images', 'image_'.uniqid().'.'.$images->extension(), ['disk' => 'public']);
+            $imagePath = $images->storeAs('public/images', 'image_'.uniqid().'.'.$images->extension());
 
             Image::create([
-                'imageUrl' => Storage::url($imagePath),
+                'url' => $imagePath,
                 'audioId' => $audio->id,
                 'galleryId' => 1,
             ]);

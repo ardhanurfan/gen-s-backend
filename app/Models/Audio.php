@@ -20,7 +20,7 @@ class Audio extends Model
      */
     protected $fillable = [
         'title',
-        'audioUrl',
+        'url',
         'uploaderId',
         'uploaderRole',
     ];
@@ -29,8 +29,8 @@ class Audio extends Model
         return $this->hasMany(Image::class, 'audioId', 'id');
     }
 
-    public function getUrlAttribute($audioUrl)
+    public function getUrlAttribute($url)
     {
-        return config('app.url').Storage::url($audioUrl);
+        return config('app.url').Storage::url($url);
     }
 }
