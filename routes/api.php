@@ -3,6 +3,7 @@
 use App\Http\Controllers\API\AudioController;
 use App\Http\Controllers\API\HistoryController;
 use App\Http\Controllers\API\GalleryController;
+use App\Http\Controllers\API\ImageController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\UserController;
@@ -28,6 +29,10 @@ Route::post('reset-password', [UserController::class, 'resetPassword']);
 Route::get('gallery', [GalleryController::class, 'all']);
 Route::post('create-gallery', [GalleryController::class, 'create']);
 Route::post('delete-gallery', [GalleryController::class, 'delete']);
+
+Route::post('add-image', [ImageController::class, 'add']);
+Route::post('delete-image', [ImageController::class, 'delete']);
+Route::post('move-image', [ImageController::class, 'move']);
 
 Route::post('delete-audio', [AudioController::class, 'delete']);
 

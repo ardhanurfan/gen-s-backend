@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('images', function (Blueprint $table) {
             $table->id();
             $table->string('url');
-            $table->foreignId('audioId')->constrained('audios')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreignId('galleryId')->constrained('galleries')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('audioId')->nullable()->constrained('audios')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('galleryId')->nullable()->constrained('galleries')->onDelete('cascade')->onUpdate('cascade');
             $table->softDeletes();
             $table->timestamps();
         });
