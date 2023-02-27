@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Helpers\ResponseFormatter;
 use App\Http\Controllers\Controller;
+use App\Models\Gallery;
 use App\Models\Image;
 use Illuminate\Http\Request;
 
@@ -18,10 +19,18 @@ class ImageController extends Controller
         $imageFile = $request->file('imageFile');
         $imagePath = $imageFile->storeAs('public/images', 'image_'.uniqid().'.'.$imageFile->extension());
 
+        // cek galleries ada root belum
+        $root = Gallery::where('name', 'root')->first();
+        if (!$root) {
+            $root = Gallery::create([
+                'name' => 'root',
+            ]);
+        }
+
         $image = Image::create([
             'url' => $imagePath,
             'audioId' => $request->audioId,
-            'galleryId' => $request->galleryId,
+            'galleryId' => $request->galleryId ?? $root->id,
         ]);
 
         return ResponseFormatter::success(

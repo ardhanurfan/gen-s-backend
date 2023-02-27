@@ -65,8 +65,8 @@ class AudioController extends Controller
         ]);
 
         // cek galleries ada root belum
-        $gallery = Gallery::where('name', 'root')->first();
-        if (!$gallery) {
+        $root = Gallery::where('name', 'root')->first();
+        if (!$root) {
             $root = Gallery::create([
                 'name' => 'root',
             ]);
