@@ -4,6 +4,7 @@ use App\Http\Controllers\API\AudioController;
 use App\Http\Controllers\API\HistoryController;
 use App\Http\Controllers\API\GalleryController;
 use App\Http\Controllers\API\ImageController;
+use App\Http\Controllers\API\PlaylistController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\UserController;
@@ -36,6 +37,9 @@ Route::post('move-image', [ImageController::class, 'move']);
 
 Route::post('delete-audio', [AudioController::class, 'delete']);
 
+Route::post('delete-playlist', [PlaylistController::class, 'delete']);
+Route::post('swap-playlist', [PlaylistController::class, 'swap']);
+
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('user', [UserController::class, 'fetch']);
     Route::post('logout', [UserController::class, 'logout']);
@@ -45,4 +49,7 @@ Route::middleware('auth:sanctum')->group(function () {
     
     Route::get('audio', [AudioController::class, 'all']);
     Route::post('add-audio', [AudioController::class, 'add']);
+
+    Route::get('playlist', [PlaylistController::class, 'all']);
+    Route::post('add-playlist', [PlaylistController::class, 'add']);
 });
