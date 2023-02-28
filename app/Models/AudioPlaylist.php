@@ -18,5 +18,6 @@ class AudioPlaylist extends Model
     protected $fillable = [
         'audioId',
         'playlistId',
+        'sequence',
     ];
 }

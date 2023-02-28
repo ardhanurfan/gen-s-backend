@@ -52,10 +52,10 @@ class PlaylistController extends Controller
                 'name' => 'required|string|unique:playlists,name',
             ]);
 
-            $playlists = Playlist::where('userId', Auth::user()->id)->orderBy('sequence', 'DESC');
+            $playlists = Playlist::where('userId', Auth::user()->id)->orderBy('sequence', 'DESC')->first();
             
             if ($playlists) {
-                $last = $playlists->first()->sequence;
+                $last = $playlists->sequence;
             } else {
                 $last = 0;
             }

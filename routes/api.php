@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\AudioController;
+use App\Http\Controllers\API\AudioPlaylistController;
 use App\Http\Controllers\API\HistoryController;
 use App\Http\Controllers\API\GalleryController;
 use App\Http\Controllers\API\ImageController;
@@ -39,6 +40,10 @@ Route::post('delete-audio', [AudioController::class, 'delete']);
 
 Route::post('delete-playlist', [PlaylistController::class, 'delete']);
 Route::post('swap-playlist', [PlaylistController::class, 'swap']);
+
+Route::post('add-audio-playlist', [AudioPlaylistController::class, 'add']);
+Route::post('delete-audio-playlist', [AudioPlaylistController::class, 'delete']);
+Route::post('swap-audio-playlist', [AudioPlaylistController::class, 'swap']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('user', [UserController::class, 'fetch']);
