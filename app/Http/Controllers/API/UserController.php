@@ -219,6 +219,7 @@ class UserController extends Controller
                 'email' => 'email|required',
                 'password' => ['required', 'string', new Password],
                 'password' => ['required', 'string'],
+                'token' => ['required', 'integer'],
             ]);
 
             if ($request->password != $request->confirmPassword) {
