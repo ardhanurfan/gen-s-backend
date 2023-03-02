@@ -261,7 +261,7 @@ class UserController extends Controller
             // delete all previous token
             $user->tokens()->delete();
 
-            return ResponseFormatter::success('Password Changed');
+            return ResponseFormatter::success(null, 'Password Changed');
         } catch (ValidationException $error) {
             return ResponseFormatter::error([
                 'message' => 'Something when wrong',
