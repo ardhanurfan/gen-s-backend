@@ -4,15 +4,14 @@ namespace App\Http\Controllers\API;
 
 use App\Helpers\ResponseFormatter;
 use App\Http\Controllers\Controller;
-use App\Models\PasswordReset;
 use App\Models\PasswordResetToken;
 use App\Models\User;
 use App\Notifications\ResetPasswordEmailVerification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Password;
 use Illuminate\Validation\ValidationException;
-use Laravel\Fortify\Rules\Password;
 
 class UserController extends Controller
 {
@@ -22,7 +21,7 @@ class UserController extends Controller
             $request->validate([
                 'username' => ['required', 'string', 'max:25', 'unique:users'],                
                 'email' => ['required', 'email','string', 'max:255', 'unique:users'],               
-                'password' => ['required', 'string', new Password],
+                'password' => ['required', 'string', Password::defaults()->uncompromised()],
                 'confirmPassword' => ['required', 'string'],
             ]);
 
@@ -217,8 +216,8 @@ class UserController extends Controller
             // Validate and Check
             $request->validate([
                 'email' => 'email|required',
-                'password' => ['required', 'string', new Password],
-                'password' => ['required', 'string'],
+                'password' => ['required', 'string', Password::defaults()->uncompromised()],
+                'confirmPassword' => ['required', 'string'],
                 'token' => ['required', 'integer'],
             ]);
 
