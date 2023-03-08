@@ -15,7 +15,6 @@ class GalleryController extends Controller
     public function all(Request $request) {
         $id = $request->input('id');
         $name = $request->input('name');
-        $limit = $request->input('limit');
 
         
         if($id) 
@@ -43,7 +42,7 @@ class GalleryController extends Controller
         }
 
         return ResponseFormatter::success(
-            $galleries->orderBy('name', 'DESC')->paginate($limit),
+            $galleries->orderBy('name', 'DESC')->get(),
             'Get galleries data successfully'
         );
     }

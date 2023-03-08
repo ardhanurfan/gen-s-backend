@@ -13,7 +13,6 @@ class PlaylistController extends Controller
 {
     public function all(Request $request) {
         $id = $request->input('id');
-        $limit = $request->input('limit');
         $name = $request->input('name');
 
         if($id) 
@@ -41,7 +40,7 @@ class PlaylistController extends Controller
         }
 
         return ResponseFormatter::success(
-            $playlists->orderBy('sequence')->paginate($limit),
+            $playlists->orderBy('sequence')->get(),
             'Get playlists data successfully'
         );
     }

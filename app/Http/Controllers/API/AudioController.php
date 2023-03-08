@@ -14,7 +14,6 @@ class AudioController extends Controller
 {
     public function all(Request $request) {
         $id = $request->input('id');
-        $limit = $request->input('limit');
         $title = $request->input('title');
 
         if($id) 
@@ -42,7 +41,7 @@ class AudioController extends Controller
         }
 
         return ResponseFormatter::success(
-            $audio->orderBy('created_at', 'DESC')->paginate($limit),
+            $audio->orderBy('created_at', 'DESC')->get(),
             'Get audios data successfully'
         );
     }
