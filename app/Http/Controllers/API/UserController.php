@@ -19,7 +19,7 @@ class UserController extends Controller
     {
         try {
             $request->validate([
-                'username' => ['required', 'string', 'max:25', 'unique:users'],                
+                'username' => ['required', 'string', 'max:25', 'unique:users', 'min:5'],                
                 'email' => ['required', 'email','string', 'max:255', 'unique:users'],               
                 'password' => ['required', 'string', Password::defaults()->uncompromised()],
                 'confirmPassword' => ['required', 'string'],
