@@ -66,7 +66,7 @@ class PlaylistController extends Controller
             ]);
 
             return ResponseFormatter::success(
-                $playlist,
+                $playlist->load('audios.images'),
                 'Create playlist successfully'
             );
 
