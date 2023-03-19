@@ -71,15 +71,12 @@ class AudioPlaylistController extends Controller
 
     public function swap(Request $request) {
         $request->validate([
-            'fromAudioId' => 'required|integer',
-            'toAudioId' => 'required|integer',
             'playlistId' => 'required|integer',
         ]);
 
-        $from = AudioPlaylist::where('audioId', $request->fromAudioId)->where('playlistId', $request->playlistId)->first();
-        $to = AudioPlaylist::where('audioId', $request->toAudioId)->where('playlistId', $request->playlistId)->first();
+        $data = AudioPlaylist::where('playlistId', $request->playlistId);
 
-        if (!$from || !$to) {
+        if ($data == []) {
             return ResponseFormatter::error(
                 null,
                 'Data not found',
@@ -87,14 +84,14 @@ class AudioPlaylistController extends Controller
             );
         }
 
-        $fromSeq = $from->sequence;
-        $from->update([
-            'sequence' => $to->sequence,
-        ]);
+        foreach($request->input('audios', []) as $row)
+        {
+            $data->find($row['audioId'])->update([
+                'sequence' => $row['sequence']
+            ]);
+        }
 
-        $to->update([
-            'sequence' => $fromSeq,
-        ]);
+        // $data->save();
 
         return ResponseFormatter::success(
             null,

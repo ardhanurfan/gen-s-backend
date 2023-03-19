@@ -105,22 +105,12 @@ class PlaylistController extends Controller
     }
 
     public function swap(Request $request) {
-        $request->validate([
-            'fromId' => 'required|integer|exists:playlists,id',
-            'toId' => 'required|integer|exists:playlists,id',
-        ]);
-
-        $from = Playlist::find($request->fromId);
-        $to = Playlist::find($request->toId);
-
-        $fromSeq = $from->sequence;
-        $from->update([
-            'sequence' => $to->sequence,
-        ]);
-
-        $to->update([
-            'sequence' => $fromSeq,
-        ]);
+        foreach($request->input('playlists', []) as $row)
+        {
+            Playlist::find($row['id'])->update([
+                'sequence' => $row['sequence']
+            ]);
+        }
 
         return ResponseFormatter::success(
             null,
