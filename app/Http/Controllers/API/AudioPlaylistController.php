@@ -74,24 +74,13 @@ class AudioPlaylistController extends Controller
             'playlistId' => 'required|integer',
         ]);
 
-        $data = AudioPlaylist::where('playlistId', $request->playlistId);
-
-        if ($data == []) {
-            return ResponseFormatter::error(
-                null,
-                'Data not found',
-                404
-            );
-        }
-
         foreach($request->input('audios', []) as $row)
         {
-            $data->find($row['audioId'])->update([
+            AudioPlaylist::where('playlistId', $request->playlistId)->where('audioId', $row['audioId'])->update([
                 'sequence' => $row['sequence']
             ]);
-        }
 
-        // $data->save();
+        }
 
         return ResponseFormatter::success(
             null,
