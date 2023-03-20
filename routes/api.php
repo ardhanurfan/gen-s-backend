@@ -40,6 +40,7 @@ Route::post('delete-audio', [AudioController::class, 'delete']);
 
 Route::post('delete-playlist', [PlaylistController::class, 'delete']);
 Route::post('swap-playlist', [PlaylistController::class, 'swap']);
+Route::post('rename-playlist', [PlaylistController::class, 'rename']);
 
 Route::post('add-audio-playlist', [AudioPlaylistController::class, 'add']);
 Route::post('delete-audio-playlist', [AudioPlaylistController::class, 'delete']);

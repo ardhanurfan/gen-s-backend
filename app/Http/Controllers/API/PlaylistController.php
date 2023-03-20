@@ -48,7 +48,7 @@ class PlaylistController extends Controller
     public function add(Request $request) {
         try {
             $request->validate([
-                'name' => 'required|string|unique:playlists,name',
+                'name' => 'required|string',
             ]);
 
             $playlists = Playlist::where('userId', Auth::user()->id)->orderBy('sequence', 'DESC')->first();
@@ -101,6 +101,32 @@ class PlaylistController extends Controller
         return ResponseFormatter::success(
             null,
             'Delete playlist successfully'
+        );
+    }
+
+    public function rename(Request $request) {
+        $request->validate([
+            'id' => 'required|integer',
+            'name' => 'required|string'
+        ]);
+
+        $playlist = Playlist::find($request->id);
+
+        if (!$playlist) {
+            return ResponseFormatter::error(
+                null,
+                'Data not found',
+                404
+            );
+        }
+
+        $playlist->update([
+            'name' => $request->name
+        ]);
+
+        return ResponseFormatter::success(
+            $playlist->load('audios.images'),
+            'Rename playlist successfully'
         );
     }
 
