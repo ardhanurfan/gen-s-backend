@@ -49,7 +49,6 @@ class AudioController extends Controller
     public function add(Request $request) {
         $request->validate([
             'title' => 'required|string',
-            'images' => 'array',
         ]);
 
         $audioFile = $request->file('audioFile');
@@ -63,7 +62,7 @@ class AudioController extends Controller
             'uploaderRole' => Auth::user()->role,
         ]);
 
-        if ($request->images) {
+        if ($request->image) {
             // cek galleries ada root belum
             $root = Gallery::where('name', 'root')->first();
             if (!$root) {
@@ -71,17 +70,16 @@ class AudioController extends Controller
                     'name' => 'root',
                 ]);
             }
-    
-            // masukkan foto ke tabel galleries
-            foreach($request->images as $image) {
-                $imagePath = $image->storeAs('public/images', 'image_'.uniqid().'.'.$image->extension());
-    
-                Image::create([
-                    'url' => $imagePath,
-                    'audioId' => $audio->id,
-                    'galleryId' => $root->id,
-                ]);
-            }
+
+            $imageFile = $request->file('image');
+            $imagePath = $imageFile->storeAs('public/images', 'image_'.uniqid().'.'.$imageFile->extension());
+
+            Image::create([
+                'url' => $imagePath,
+                'audioId' => $audio->id,
+                'galleryId' => $root->id,
+            ]);
+            
         }
 
         return ResponseFormatter::success(
