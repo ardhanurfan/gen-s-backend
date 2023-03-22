@@ -58,7 +58,7 @@ class GalleryController extends Controller
             ]);
 
             return ResponseFormatter::success(
-                $gallery,
+                $gallery->load('images'),
                 'Create gallery successfully'
             );
         } catch (ValidationException $error) {
