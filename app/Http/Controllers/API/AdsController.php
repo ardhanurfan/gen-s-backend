@@ -29,7 +29,7 @@ class AdsController extends Controller
             $adsFile = $request->file('adsFile');
             $adsPath = $adsFile->storeAs('public/ads', 'ads_'.uniqid().'.'.$adsFile->extension());
 
-            // masukkan ke tabel audios
+            // masukkan ke tabel ads
             $ads = Ads::create([
                 'frequency' => $request->frequency,
                 'url' => $adsPath,
