@@ -20,6 +20,7 @@ class Ads extends Model
      */
     protected $fillable = [    
         'url',
+        'link',
         'frequency',
     ];
 

@@ -24,6 +24,7 @@ class AdsController extends Controller
         try {
             $request->validate([
             'frequency' => 'required|integer',
+            'link' => 'required|string',
             ]);
 
             $adsFile = $request->file('adsFile');
@@ -33,6 +34,7 @@ class AdsController extends Controller
             $ads = Ads::create([
                 'frequency' => $request->frequency,
                 'url' => $adsPath,
+                'link' => $request->link,
             ]);
 
             return ResponseFormatter::success(
