@@ -78,4 +78,32 @@ class AdsController extends Controller
         );
     }
 
+    public function edit(Request $request) {
+        $request->validate([
+            'id' => 'required|integer',
+            'frequency' => 'required|integer',
+            'link' => 'required|string',
+        ]);
+
+        $ads = Ads::find($request->id);
+
+        if (!$ads) {
+            return ResponseFormatter::error(
+                null,
+                'Data not found',
+                404
+            );
+        }
+
+        $ads->update([
+            'frequency' => $request->frequency,
+            'link' => $request->link,
+        ]);
+
+        return ResponseFormatter::success(
+            $ads,
+            'Edit ads successfully'
+        );
+    }
+
 }

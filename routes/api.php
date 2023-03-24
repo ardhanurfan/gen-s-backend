@@ -50,6 +50,7 @@ Route::post('swap-audio-playlist', [AudioPlaylistController::class, 'swap']);
 Route::get('ads', [AdsController::class, 'all']);
 Route::post('add-ads', [AdsController::class, 'add']);
 Route::post('delete-ads', [AdsController::class, 'delete']);
+Route::post('edit-ads', [AdsController::class, 'edit']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('user', [UserController::class, 'fetch']);
