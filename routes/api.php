@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\AdsController;
 use App\Http\Controllers\API\AudioController;
 use App\Http\Controllers\API\AudioPlaylistController;
 use App\Http\Controllers\API\HistoryController;
@@ -45,6 +46,10 @@ Route::post('rename-playlist', [PlaylistController::class, 'rename']);
 Route::post('add-audio-playlist', [AudioPlaylistController::class, 'add']);
 Route::post('delete-audio-playlist', [AudioPlaylistController::class, 'delete']);
 Route::post('swap-audio-playlist', [AudioPlaylistController::class, 'swap']);
+
+Route::get('ads', [AdsController::class, 'all']);
+Route::post('add-ads', [AdsController::class, 'add']);
+Route::post('delete-ads', [AdsController::class, 'delete']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('user', [UserController::class, 'fetch']);
