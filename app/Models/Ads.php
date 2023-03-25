@@ -19,6 +19,7 @@ class Ads extends Model
      * @var string[]
      */
     protected $fillable = [    
+        'title',
         'url',
         'link',
         'frequency',

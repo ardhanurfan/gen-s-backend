@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Ads;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use Ramsey\Uuid\Type\Integer;
 
 class AdsController extends Controller
 {
@@ -23,8 +24,9 @@ class AdsController extends Controller
     public function add(Request $request) {
         try {
             $request->validate([
-            'frequency' => 'required|integer',
+            'frequency' => 'required',
             'link' => 'required|string',
+            'title' => 'required|string',
             'adsFile' => 'required',
             ]);
 
@@ -33,7 +35,8 @@ class AdsController extends Controller
 
             // masukkan ke tabel ads
             $ads = Ads::create([
-                'frequency' => $request->frequency,
+                'title' => $request->title,
+                'frequency' => (int)$request->frequency,
                 'url' => $adsPath,
                 'link' => $request->link,
             ]);
@@ -84,6 +87,7 @@ class AdsController extends Controller
             'id' => 'required|integer',
             'frequency' => 'required|integer',
             'link' => 'required|string',
+            'title' => 'required|string',
         ]);
 
         $ads = Ads::find($request->id);
@@ -99,6 +103,7 @@ class AdsController extends Controller
         $ads->update([
             'frequency' => $request->frequency,
             'link' => $request->link,
+            'title' => $request->title,
         ]);
 
         return ResponseFormatter::success(
