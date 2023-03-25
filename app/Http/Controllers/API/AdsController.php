@@ -25,6 +25,7 @@ class AdsController extends Controller
             $request->validate([
             'frequency' => 'required|integer',
             'link' => 'required|string',
+            'adsFile' => 'required',
             ]);
 
             $adsFile = $request->file('adsFile');
