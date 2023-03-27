@@ -79,7 +79,7 @@ class UserController extends Controller
             $user->markEmailAsVerified();
         }
 
-        return view('welcome');
+        return view('email-verification');
     }
 
     public function login(Request $request) 
