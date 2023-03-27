@@ -99,4 +99,30 @@ class GalleryController extends Controller
             'Delete gallery successfully'
         );
     }
+
+    public function rename(Request $request) {
+        $request->validate([
+            'id' => 'required|integer',
+            'name' => 'required|string'
+        ]);
+
+        $playlist = Gallery::find($request->id);
+
+        if (!$playlist) {
+            return ResponseFormatter::error(
+                null,
+                'Data not found',
+                404
+            );
+        }
+
+        $playlist->update([
+            'name' => $request->name
+        ]);
+
+        return ResponseFormatter::success(
+            $playlist->load('images'),
+            'Rename gallery successfully'
+        );
+    }
 }

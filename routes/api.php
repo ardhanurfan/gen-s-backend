@@ -32,6 +32,7 @@ Route::post('reset-password', [UserController::class, 'resetPassword']);
 Route::get('gallery', [GalleryController::class, 'all']);
 Route::post('create-gallery', [GalleryController::class, 'create']);
 Route::post('delete-gallery', [GalleryController::class, 'delete']);
+Route::post('rename-gallery', [GalleryController::class, 'rename']);
 
 Route::post('add-image', [ImageController::class, 'add']);
 Route::post('delete-image', [ImageController::class, 'delete']);
