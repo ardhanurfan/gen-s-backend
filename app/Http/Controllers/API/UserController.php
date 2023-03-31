@@ -111,9 +111,10 @@ class UserController extends Controller
             }
 
             if (!$user->hasVerifiedEmail()) {
+                $user->sendEmailVerificationNotification();
                 return ResponseFormatter::error([
                     'message' => 'Unauthorized',
-                    'error' => 'Account not verified'
+                    'error' => 'Account not verified. Check your email inbox or spam'
                 ],
                     'Authentication Failed',
                     500
