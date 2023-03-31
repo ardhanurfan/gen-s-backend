@@ -64,13 +64,7 @@ class UserController extends Controller
     public function verify($id, Request $request)
     {
         if (!$request->hasValidSignature()) {
-            return ResponseFormatter::error([
-                'message' => 'Unauthorized',
-                'error' => 'Account not verified'
-            ],
-                'Authentication Failed',
-                500
-            );
+            return view('email-failed-verification');
         }
 
         $user = User::find($id);
