@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('url');
             $table->string('link');
+            $table->string('location');
             $table->integer('frequency');
             $table->softDeletes();
             $table->timestamps();

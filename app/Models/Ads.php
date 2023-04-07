@@ -23,6 +23,7 @@ class Ads extends Model
         'url',
         'link',
         'frequency',
+        'location',
     ];
 
     public function getUrlAttribute($url)

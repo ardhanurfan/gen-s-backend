@@ -12,11 +12,12 @@ use Ramsey\Uuid\Type\Integer;
 class AdsController extends Controller
 {
     public function all(Request $request) {
+        $location = $request->input('location');
 
-        $ads = Ads::get();
+        $ads = Ads::where('location', $location);
 
         return ResponseFormatter::success(
-            $ads,
+            $ads->get(),
             'Get ads data successfully'
         );
     }
@@ -28,6 +29,7 @@ class AdsController extends Controller
             'link' => 'required|string',
             'title' => 'required|string',
             'adsFile' => 'required',
+            'location' => 'required|string',
             ]);
 
             $adsFile = $request->file('adsFile');
@@ -39,6 +41,7 @@ class AdsController extends Controller
                 'frequency' => (int)$request->frequency,
                 'url' => $adsPath,
                 'link' => $request->link,
+                'location' => $request->location,
             ]);
 
             return ResponseFormatter::success(
@@ -88,6 +91,7 @@ class AdsController extends Controller
             'frequency' => 'required|integer',
             'link' => 'required|string',
             'title' => 'required|string',
+            'location' => 'required|string',
         ]);
 
         $ads = Ads::find($request->id);
@@ -104,6 +108,7 @@ class AdsController extends Controller
             'frequency' => $request->frequency,
             'link' => $request->link,
             'title' => $request->title,
+            'location' => $request->location,
         ]);
 
         return ResponseFormatter::success(
