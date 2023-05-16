@@ -118,4 +118,30 @@ class AudioController extends Controller
             'Delete audio successfully'
         );
     }
+
+    public function rename(Request $request) {
+        $request->validate([
+            'id' => 'required|integer',
+            'title' => 'required|string'
+        ]);
+
+        $audio = Audio::find($request->id);
+
+        if (!$audio) {
+            return ResponseFormatter::error(
+                null,
+                'Data not found',
+                404
+            );
+        }
+
+        $audio->update([
+            'title' => $request->title
+        ]);
+
+        return ResponseFormatter::success(
+            $audio->load('images'),
+            'Rename audio successfully'
+        );
+    }
 }
