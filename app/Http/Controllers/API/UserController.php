@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Helpers\ResponseFormatter;
 use App\Http\Controllers\Controller;
+use App\Models\Audio;
 use App\Models\PasswordResetToken;
 use App\Models\User;
 use App\Notifications\ResetPasswordEmailVerification;
@@ -262,6 +263,36 @@ class UserController extends Controller
                 'error' => array_values($error->errors())[0][0],    
             ], 
                 'Reset Password Failed', 
+                500,
+            );
+        }
+    }
+
+    public function delete(Request $request) {
+        try {
+            $userId = $request->user()->id;
+            $audios = Audio::where('uploaderId', $userId)->get();
+            
+            // delete audio saved from storage
+            foreach($audios as $audio) {
+                unlink(public_path(str_replace(config('app.url'),'',$audio->url)));
+            }
+            
+            // LogOut
+            $request->user()->currentAccessToken()->delete();
+
+            // Find in table by id and delete
+            $user = User::find($userId);
+            $user->forceDelete();
+
+            return ResponseFormatter::success(null, 'Account Deleted');
+
+        } catch (ValidationException $error) {
+            return ResponseFormatter::error([
+                'message' => 'Something when wrong',
+                'error' => array_values($error->errors())[0][0],    
+            ], 
+                'Delete Account Failed', 
                 500,
             );
         }
