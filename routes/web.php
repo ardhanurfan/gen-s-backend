@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\API\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,3 +27,10 @@ use Illuminate\Support\Facades\Route;
 //         return view('dashboard');
 //     })->name('dashboard');
 // });
+
+Route::get('/delete-account', function () {
+    return view('delete-account');
+});
+
+Route::post('/account-deleted', [UserController::class, 'deleteInWeb'])->name('account-deleted');
+

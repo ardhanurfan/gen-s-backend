@@ -297,4 +297,49 @@ class UserController extends Controller
             );
         }
     }
+
+    public function deleteInWeb(Request $request)
+    {
+        $email = $request->input('email');
+        $password = $request->input('password');
+        $confirmPassword = $request->input('confirm_password');
+
+        // Lakukan validasi email, password, dan konfirmasi password
+        if ($email && $password && $confirmPassword && $password === $confirmPassword) {
+
+            // Cek apakah ada email dan password yang sesuai
+            $credentials = request(['email', 'password']);
+
+            $user = User::where('email', $request->email)->first();
+
+            if (!$user) {
+                return redirect()->back()->with('error', 'Email Not Found');
+            }
+
+            if (!Auth::attempt($credentials)) {
+                return redirect()->back()->with('error', 'Password Incorrect');
+            }
+
+            // cek ulang apakah password sesuai (opsional)
+            if(!Hash::check($request->password, $user->password, [])) {
+                return redirect()->back()->with('error', 'Password Incorrect');
+            }
+
+            // Hapus Akun audios yang disimpan
+            $audios = Audio::where('uploaderId', $user->id)->get();
+            
+            // delete audio saved from storage
+            foreach($audios as $audio) {
+                unlink(public_path(str_replace(config('app.url'),'',$audio->url)));
+            }
+
+            $user->forceDelete();
+
+            // Jika akun berhasil dihapus, redirect ke halaman konfirmasi
+            return view('account-deleted');
+        } else {
+            // Jika ada kesalahan validasi, kembalikan ke halaman delete account dengan pesan error
+            return redirect()->back()->with('error', 'Invalid email or password');
+        }
+    }
 }
