@@ -25,8 +25,6 @@ jobs:
             cd /var/www/html/gen-s-backend ;
             if [ ! -d .git ]; then echo 'Project belum ada' && git clone https://oauth2:'${{ secrets.CLONE_TOKEN }}'@github.com/ardhanurfan/gen-s-backend.git .; fi ;
             git pull origin master ;
-            if [ -f .env ]; then rm .env; fi ;
-            echo '${{ vars.FILE_ENV }}' >> .env ;
             echo 'Run Composer...' ;
             export COMPOSER_ALLOW_SUPERUSER=1 ;
             composer update ;
