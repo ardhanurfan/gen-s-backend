@@ -31,9 +31,9 @@ jobs:
             export COMPOSER_ALLOW_SUPERUSER=1 ;
             composer update ;
             composer install ;
+            npm run dev ;
             # php artisan migrate ;
             # php artisan key:generate ;
-            # npm run dev ;
             # chmod -R 777 storage ;
             # systemctl restart nginx ;
             echo 'Deployment completed.'
