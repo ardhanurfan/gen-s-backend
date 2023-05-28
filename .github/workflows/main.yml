@@ -31,7 +31,6 @@ jobs:
             export COMPOSER_ALLOW_SUPERUSER=1 ;
             composer update ;
             composer install ;
-            sudo apt-get install npm ;
             npm run dev ;
             # php artisan migrate ;
             # php artisan key:generate ;
