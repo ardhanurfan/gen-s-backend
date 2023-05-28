@@ -33,7 +33,7 @@ jobs:
             composer install ;
             # php artisan migrate ;
             # php artisan key:generate ;
-            # npm run dev
+            # npm run dev ;
             # chmod -R 777 storage ;
             # systemctl restart nginx ;
             echo 'Deployment completed.'
