@@ -32,7 +32,7 @@ jobs:
             composer update ;
             composer install ;
             npm ci ;
-            npm run dev ;
+            npm run build ;
             # php artisan migrate ;
             # php artisan key:generate ;
             # chmod -R 777 storage ;
