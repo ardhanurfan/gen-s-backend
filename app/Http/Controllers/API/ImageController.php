@@ -17,7 +17,7 @@ class ImageController extends Controller
         ]);
 
         $imageFile = $request->file('imageFile');
-        $imagePath = $imageFile->storeAs('public/images', 'image_'.uniqid().'.'.$imageFile->extension());
+        $imagePath = $imageFile->storeAs('public/images', str_replace(' ','_',$imageFile->getClientOriginalName()));
 
         // cek galleries ada root belum
         $root = Gallery::where('name', 'root')->first();
