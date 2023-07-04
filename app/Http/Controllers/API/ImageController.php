@@ -14,10 +14,11 @@ class ImageController extends Controller
         $request->validate([
             'audioId' => 'integer',
             'galleryId' => 'integer',
+            'title' =>'string'
         ]);
 
         $imageFile = $request->file('imageFile');
-        $imagePath = $imageFile->storeAs('public/images', str_replace(' ','_',$imageFile->getClientOriginalName()));
+        $imagePath = $imageFile->storeAs('public/images', $request->title);
 
         // cek galleries ada root belum
         $root = Gallery::where('name', 'root')->first();
