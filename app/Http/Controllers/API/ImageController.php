@@ -14,10 +14,11 @@ class ImageController extends Controller
         $request->validate([
             'audioId' => 'integer',
             'galleryId' => 'integer',
+            'title' =>'string'
         ]);
 
         $imageFile = $request->file('imageFile');
-        $imagePath = $imageFile->storeAs('public/images', 'image_'.uniqid().'.'.$imageFile->extension());
+        $imagePath = $imageFile->storeAs('public/images', $request->title);
 
         // cek galleries ada root belum
         $root = Gallery::where('name', 'root')->first();
@@ -31,6 +32,7 @@ class ImageController extends Controller
             'url' => $imagePath,
             'audioId' => $request->audioId,
             'galleryId' => $request->galleryId ?? $root->id,
+           
         ]);
 
         return ResponseFormatter::success(
