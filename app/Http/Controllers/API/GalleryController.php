@@ -9,21 +9,23 @@ use Faker\Core\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Collection;
+
 
 class GalleryController extends Controller
 {
-    public function all(Request $request) {
+    public function all(Request $request)
+    {
         $id = $request->input('id');
         $name = $request->input('name');
 
-        
-        if($id) 
-        {
+
+        if ($id) {
             $gallery = Gallery::with(['images'])->find($id);
 
-            if($gallery){
+            if ($gallery) {
                 return ResponseFormatter::success(
-                    $gallery, 
+                    $gallery,
                     'Get gallery data successfully'
                 );
             } else {
@@ -37,24 +39,45 @@ class GalleryController extends Controller
 
         $galleries = Gallery::with(['images']);
 
-        if($name) {
+        if ($name) {
             $galleries->where('name', 'like', '%' . $name . '%');
         }
 
+        $galleries = $galleries->orderBy('name', 'DESC')->get();
+        $tree = $this->buildTree($galleries);
+
         return ResponseFormatter::success(
-            $galleries->orderBy('name', 'DESC')->get(),
+            $tree,
             'Get galleries data successfully'
         );
     }
 
-    public function create(Request $request) {
+    protected function buildTree(Collection $elements, $parentId = 0)
+    {
+        $branch = collect();
+
+        foreach ($elements as $element) {
+            if ($element->parentId == $parentId) {
+                $children = $this->buildTree($elements, $element->id);
+                $element->setAttribute('children', $children->isNotEmpty() ? $children : []);
+                $branch->push($element);
+            }
+        }
+
+        return $branch;
+    }
+
+    public function create(Request $request)
+    {
         try {
             $request->validate([
                 'name' => 'required|string|unique:galleries,name',
+                'parentId' => 'sometimes|exists:galleries,id',
             ]);
 
             $gallery = Gallery::create([
                 'name' => $request->name,
+                'parentId' => $request->parentId ? $request->parentId : 0,
             ]);
 
             return ResponseFormatter::success(
@@ -62,17 +85,19 @@ class GalleryController extends Controller
                 'Create gallery successfully'
             );
         } catch (ValidationException $error) {
-            return ResponseFormatter::error([
-                'message' => 'Something when wrong',
-                'error' => array_values($error->errors())[0][0],    
-            ], 
-                'Create gallery failed', 
+            return ResponseFormatter::error(
+                [
+                    'message' => 'Something when wrong',
+                    'error' => array_values($error->errors())[0][0],
+                ],
+                'Create gallery failed',
                 500,
             );
         }
     }
 
-    public function delete(Request $request) {
+    public function delete(Request $request)
+    {
         $request->validate([
             'id' => 'required|integer',
         ]);
@@ -88,8 +113,8 @@ class GalleryController extends Controller
         }
 
         // delete images from storage
-        foreach($gallery->images as $image) {
-            unlink(public_path(str_replace(config('app.url'),'',$image['url'])));
+        foreach ($gallery->images as $image) {
+            unlink(public_path(str_replace(config('app.url'), '', $image['url'])));
         }
 
         $gallery->forceDelete();
@@ -100,7 +125,8 @@ class GalleryController extends Controller
         );
     }
 
-    public function rename(Request $request) {
+    public function rename(Request $request)
+    {
         $request->validate([
             'id' => 'required|integer',
             'name' => 'required|string'

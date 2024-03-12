@@ -54,14 +54,16 @@ Route::post('add-ads', [AdsController::class, 'add']);
 Route::post('delete-ads', [AdsController::class, 'delete']);
 Route::post('edit-ads', [AdsController::class, 'edit']);
 
+Route::get('audio-no-login', [AudioController::class, 'allNoLogin']);
+
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('user', [UserController::class, 'fetch']);
     Route::post('logout', [UserController::class, 'logout']);
     Route::post('delete-account', [UserController::class, 'delete']);
-    
+
     Route::get('history', [HistoryController::class, 'all']);
     Route::post('history', [HistoryController::class, 'add']);
-    
+
     Route::get('audio', [AudioController::class, 'all']);
     Route::post('add-audio', [AudioController::class, 'add']);
 

@@ -12,17 +12,17 @@ use Illuminate\Support\Facades\Auth;
 
 class AudioController extends Controller
 {
-    public function all(Request $request) {
+    public function all(Request $request)
+    {
         $id = $request->input('id');
         $title = $request->input('title');
 
-        if($id) 
-        {
+        if ($id) {
             $audio = Audio::with(['images'])->find($id);
 
-            if($audio){
+            if ($audio) {
                 return ResponseFormatter::success(
-                    $audio, 
+                    $audio,
                     'Get audio data successfully'
                 );
             } else {
@@ -34,9 +34,11 @@ class AudioController extends Controller
             }
         }
 
-        $audio = Audio::with(['images'])->where(function($q) {$q->where('uploaderId', Auth::user()->id)->orWhere('uploaderRole', 'ADMIN');});
+        $audio = Audio::with(['images'])->where(function ($q) {
+            $q->where('uploaderId', Auth::user()->id)->orWhere('uploaderRole', 'ADMIN');
+        });
 
-        if($title) {
+        if ($title) {
             $audio->where('title', 'like', '%' . $title . '%');
         }
 
@@ -46,13 +48,48 @@ class AudioController extends Controller
         );
     }
 
-    public function add(Request $request) {
+    public function allNoLogin(Request $request)
+    {
+        $id = $request->input('id');
+        $title = $request->input('title');
+
+        if ($id) {
+            $audio = Audio::with(['images'])->find($id);
+
+            if ($audio) {
+                return ResponseFormatter::success(
+                    $audio,
+                    'Get audio data successfully'
+                );
+            } else {
+                return ResponseFormatter::error(
+                    null,
+                    'Data not found',
+                    404
+                );
+            }
+        }
+
+        $audio = Audio::with(['images'])->where('uploaderRole', 'ADMIN');
+
+        if ($title) {
+            $audio->where('title', 'like', '%' . $title . '%');
+        }
+
+        return ResponseFormatter::success(
+            $audio->orderBy('created_at', 'DESC')->get(),
+            'Get audios data successfully'
+        );
+    }
+
+    public function add(Request $request)
+    {
         $request->validate([
             'title' => 'required|string',
         ]);
 
         $audioFile = $request->file('audioFile');
-        $audioPath = $audioFile->storeAs('public/audios', 'audio_'.uniqid().'.'.$audioFile->extension());
+        $audioPath = $audioFile->storeAs('public/audios', 'audio_' . uniqid() . '.' . $audioFile->extension());
 
         // masukkan ke tabel audios
         $audio = Audio::create([
@@ -72,14 +109,13 @@ class AudioController extends Controller
             }
 
             $imageFile = $request->file('image');
-            $imagePath = $imageFile->storeAs('public/images', 'image_'.uniqid().'.'.$imageFile->extension());
+            $imagePath = $imageFile->storeAs('public/images', 'image_' . uniqid() . '.' . $imageFile->extension());
 
             Image::create([
                 'url' => $imagePath,
                 'audioId' => $audio->id,
                 'galleryId' => $root->id,
             ]);
-            
         }
 
         return ResponseFormatter::success(
@@ -88,7 +124,8 @@ class AudioController extends Controller
         );
     }
 
-    public function delete(Request $request) {
+    public function delete(Request $request)
+    {
         $request->validate([
             'id' => 'required|integer',
         ]);
@@ -104,12 +141,12 @@ class AudioController extends Controller
         }
 
         // delete images from storage
-        foreach($audio->images as $image) {
-            unlink(public_path(str_replace(config('app.url'),'',$image['url'])));
+        foreach ($audio->images as $image) {
+            unlink(public_path(str_replace(config('app.url'), '', $image['url'])));
         }
-        
+
         // delete audio from storage
-        unlink(public_path(str_replace(config('app.url'),'',$audio->url)));
+        unlink(public_path(str_replace(config('app.url'), '', $audio->url)));
 
         $audio->forceDelete();
 
@@ -119,7 +156,8 @@ class AudioController extends Controller
         );
     }
 
-    public function rename(Request $request) {
+    public function rename(Request $request)
+    {
         $request->validate([
             'id' => 'required|integer',
             'title' => 'required|string'

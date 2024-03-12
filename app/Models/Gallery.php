@@ -17,9 +17,16 @@ class Gallery extends Model
      */
     protected $fillable = [
         'name',
+        'parentId',
     ];
 
-    public function images() {
+    public function images()
+    {
         return $this->hasMany(Image::class, 'galleryId', 'id');
+    }
+
+    public function galleries()
+    {
+        return $this->hasMany(Gallery::class, 'parentId', 'id');
     }
 }
