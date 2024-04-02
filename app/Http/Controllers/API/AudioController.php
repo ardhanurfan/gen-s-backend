@@ -99,24 +99,24 @@ class AudioController extends Controller
             'uploaderRole' => Auth::user()->role,
         ]);
 
-        if ($request->image) {
-            // cek galleries ada root belum
-            $root = Gallery::where('name', 'root')->first();
-            if (!$root) {
-                $root = Gallery::create([
-                    'name' => 'root',
-                ]);
-            }
+        // if ($request->image) {
+        //     // cek galleries ada root belum
+        //     $root = Gallery::where('name', 'root')->first();
+        //     if (!$root) {
+        //         $root = Gallery::create([
+        //             'name' => 'root',
+        //         ]);
+        //     }
 
-            $imageFile = $request->file('image');
-            $imagePath = $imageFile->storeAs('public/images', 'image_' . uniqid() . '.' . $imageFile->extension());
+        //     $imageFile = $request->file('image');
+        //     $imagePath = $imageFile->storeAs('public/images', 'image_' . uniqid() . '.' . $imageFile->extension());
 
-            Image::create([
-                'url' => $imagePath,
-                'audioId' => $audio->id,
-                'galleryId' => $root->id,
-            ]);
-        }
+        //     Image::create([
+        //         'url' => $imagePath,
+        //         'audioId' => $audio->id,
+        //         'galleryId' => $root->id,
+        //     ]);
+        // }
 
         return ResponseFormatter::success(
             $audio->load('images'),

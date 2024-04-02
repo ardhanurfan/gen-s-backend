@@ -75,9 +75,17 @@ class GalleryController extends Controller
                 'parentId' => 'sometimes|exists:galleries,id',
             ]);
 
+            // cek galleries ada root belum
+            $root = Gallery::where('name', 'root')->first();
+            if (!$root) {
+                $root = Gallery::create([
+                    'name' => 'root',
+                ]);
+            }
+
             $gallery = Gallery::create([
                 'name' => $request->name,
-                'parentId' => $request->parentId ? $request->parentId : 0,
+                'parentId' => $request->parentId ?? $root->id,
             ]);
 
             return ResponseFormatter::success(

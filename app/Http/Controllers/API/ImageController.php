@@ -10,11 +10,12 @@ use Illuminate\Http\Request;
 
 class ImageController extends Controller
 {
-    public function add(Request $request) {
+    public function add(Request $request)
+    {
         $request->validate([
             'audioId' => 'integer',
             'galleryId' => 'integer',
-            'title' =>'string'
+            'title' => 'string'
         ]);
 
         $imageFile = $request->file('imageFile');
@@ -32,7 +33,6 @@ class ImageController extends Controller
             'url' => $imagePath,
             'audioId' => $request->audioId,
             'galleryId' => $request->galleryId ?? $root->id,
-           
         ]);
 
         return ResponseFormatter::success(
@@ -41,7 +41,8 @@ class ImageController extends Controller
         );
     }
 
-    public function delete(Request $request) {
+    public function delete(Request $request)
+    {
         $request->validate([
             'id' => 'required|integer',
         ]);
@@ -56,7 +57,7 @@ class ImageController extends Controller
             );
         }
 
-        unlink(public_path(str_replace(config('app.url'),'',$image->url)));
+        unlink(public_path(str_replace(config('app.url'), '', $image->url)));
         $image->forceDelete();
 
         return ResponseFormatter::success(
@@ -65,7 +66,8 @@ class ImageController extends Controller
         );
     }
 
-    public function move(Request $request) {
+    public function move(Request $request)
+    {
         $request->validate([
             'id' => 'required|integer',
             'toGalleryId' => 'required|integer',
